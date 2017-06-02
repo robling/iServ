@@ -7,6 +7,6 @@ server {
 	root /home/mio/www/kagami;
 	index index.html index.php;
 
-	include /home/mio/scripts/nginx_conf/php_fastcgi.conf;
-	include /home/mio/scripts/nginx_conf/letsencrypt.conf;
+	include /home/mio/iServ/scripts/nginx_conf/php_fastcgi.conf;
+	include /home/mio/iServ/scripts/nginx_conf/letsencrypt.conf;
 }

@@ -3,7 +3,7 @@ server {
 	listen [::]:80;
 	server_name spdf.me;
 
-	include /home/mio/scripts/nginx_conf/letsencrypt.conf;
+	include /home/mio/iServ/scripts/nginx_conf/letsencrypt.conf;
 	
 	location / {
 		return 301 https://$http_host$request_uri;
@@ -21,7 +21,7 @@ server {
 	root /home/mio/scripts/blog/wordpress;
 	index index.html index.php;
 
-	include /home/mio/scripts/nginx_conf/secureSSL.conf;
-	include /home/mio/scripts/nginx_conf/wordpress.conf;
+	include /home/mio/iServ/scripts/nginx_conf/secureSSL.conf;
+	include /home/mio/iServ/scripts/nginx_conf/wordpress.conf;
 	client_max_body_size 100m;
 }
