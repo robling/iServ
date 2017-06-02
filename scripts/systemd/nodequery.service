@@ -1,0 +1,5 @@
+[Unit]
+Description=Send ananysis data to nodequery
+
+[Service]
+ExecStart=/home/mio/scripts/invoke_nodequery.sh

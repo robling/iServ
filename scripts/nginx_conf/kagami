@@ -1,0 +1,12 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name kagami.top www.kagami.top;
+
+	root /home/mio/www/kagami;
+	index index.html index.php;
+
+	include /home/mio/scripts/nginx_conf/php_fastcgi.conf;
+	include /home/mio/scripts/nginx_conf/letsencrypt.conf;
+}
