@@ -23,7 +23,7 @@ cmds["clean"] = function ()
 end
 
 cmds["backup"] = function()
-    os.execute("db_username=".. db_username  .. " && db_password=".. db_password .." && ./scripts/auto_backup.sh")
+    os.execute("../scripts/auto_backup.sh " .. db_username .. " " .. db_password)
 end
 
 cmd = arg[1]
