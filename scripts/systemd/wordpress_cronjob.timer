@@ -1,0 +1,8 @@
+[Unit]
+Description=Send ananysis data to nodequery every 180s
+
+[Timer]
+OnCalendar=30min
+
+[Install]
+WantedBy=timers.target
