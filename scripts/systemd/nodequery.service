@@ -2,4 +2,4 @@
 Description=Send ananysis data to nodequery
 
 [Service]
-ExecStart=/home/mio/scripts/invoke_nodequery.sh
+ExecStart=/home/mio/iServ/scripts/invoke_nodequery.sh

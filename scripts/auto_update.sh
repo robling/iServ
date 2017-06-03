@@ -1,2 +1,2 @@
 #!/bin/bash
-zypper -n dup --no-allow-vendor-change
+zypper -n dup --no-allow-vendor-change > /home/mio/iServ/log/auto_update.log
