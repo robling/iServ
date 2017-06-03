@@ -22,6 +22,11 @@ cmds["clean"] = function ()
     encrypt_config(encrypt_pw)
 end
 
+cmds["backup"] = function()
+    os.execute("db_username=".. db_username  .. " && db_password=".. db_password .." && 
+./scripts/auto_backup.sh")
+end
+
 cmd = arg[1]
 
 if cmds[cmd] ~= nil then
