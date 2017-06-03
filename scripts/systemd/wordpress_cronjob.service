@@ -2,4 +2,4 @@
 Description=Invoke cronjob for wordpress
 
 [Service]
-ExecStart=php -f /home/mio/www/blog/wordpress/wp-cron.php
+ExecStart=/usr/bin/php -f /home/mio/www/blog/wordpress/wp-cron.php
