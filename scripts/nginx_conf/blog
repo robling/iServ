@@ -18,7 +18,7 @@ server {
 
 	server_name spdf.me;
 
-	root /home/mio/scripts/blog/wordpress;
+	root /home/mio/www/blog/wordpress;
 	index index.html index.php;
 
 	include /home/mio/iServ/scripts/nginx_conf/secureSSL.conf;
