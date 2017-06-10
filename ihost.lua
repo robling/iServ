@@ -24,6 +24,7 @@ cmds["clean"] = function ()
 end
 
 cmds["backup"] = function()
+    encrypt_config(encrypt_pw)
     os.execute("./scripts/auto_backup.sh " .. db_username .. " " .. db_password)
 end
 
