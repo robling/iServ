@@ -1,3 +1,4 @@
+#!/usr/bin/lua
 require("./scripts/helper_function")
 
 if file_exists("config.lua") ~= true then
