@@ -14,3 +14,5 @@ UMask=0027
 
 [Install]
 WantedBy=multi-user.target
+
+# Code From https://yuyii.com/2015/12/28/shadowsocks-systemd/
