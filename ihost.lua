@@ -28,6 +28,16 @@ cmds["backup"] = function()
     os.execute("./scripts/auto_backup.sh " .. db_username .. " " .. db_password)
 end
 
+cmds["deploy_systemd"] = function()
+    encrypt_config(encrypt_pw)
+    os.execute("sudo ./scripts/deploy_systemd.sh")
+end
+
+cmds["enable_site"] = function()
+    encrypt_config(encrypt_pw)
+    os.execute("sudo ./scripts/enable_site.sh")
+end
+
 cmd = arg[1]
 
 if cmds[cmd] ~= nil then
