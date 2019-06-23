@@ -4,7 +4,14 @@ function file_exists(name)
 end
 
 function encrypt_config(pw)
-    os.execute('openssl aes-128-cbc -salt -in config.lua -out config.lua.aes -k '.. pw)
-    os.execute('rm config.lua')
+    os.execute('openssl enc -aes-256-cfb -salt -in config.lua -out config.lua.aes -k '.. pw)
+    --os.execute('rm config.lua')
 end
 
+function decrypt_config(pw)
+    if file_exists("config.lua.aes") then
+        --local rst = io.popen('openssl aes-128-cbc -d -salt -in config.lua.aes -out config.lua')
+        print("decrypt your config file:")
+        os.execute('openssl enc -aes-256-cfb -d -salt -in config.lua.aes -out config.lua')
+    end
+end

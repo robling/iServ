@@ -2,13 +2,8 @@
 require("./scripts/helper_function")
 
 if file_exists("config.lua") ~= true then
-    if file_exists("config.lua.aes") then
-    --local rst = io.popen('openssl aes-128-cbc -d -salt -in config.lua.aes -out config.lua')
-    print("decrypt your config file:")
-    os.execute('openssl aes-128-cbc -d -salt -in config.lua.aes -out config.lua')
-    else
-        do return end
-    end
+    decrypt_config()
+    return
 end
 if file_exists("config.lua") then
     require("config")
@@ -36,6 +31,12 @@ end
 cmds["enable_site"] = function()
     encrypt_config(encrypt_pw)
     os.execute("sudo ./scripts/enable_site.sh")
+end
+
+cmds["acme"] = function()
+    os.execute("export DP_Id=\"" .. dnspod_id .. "\"")
+    os.execute("export DP_Key=\"" .. dnspod_token .. "\"")
+    os.execute("sudo ./scripts/auto_certs_acquire.sh")
 end
 
 cmd = arg[1]
