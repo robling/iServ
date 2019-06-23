@@ -20,23 +20,23 @@ end
 
 cmds["backup"] = function()
     encrypt_config(encrypt_pw)
-    os.execute("./scripts/auto_backup.sh " .. db_username .. " " .. db_password)
+    run_cmd("./scripts/auto_backup.sh " .. db_username .. " " .. db_password)
 end
 
 cmds["deploy_systemd"] = function()
     encrypt_config(encrypt_pw)
-    os.execute("sudo ./scripts/deploy_systemd.sh")
+    run_cmd("sudo ./scripts/deploy_systemd.sh")
 end
 
 cmds["enable_site"] = function()
     encrypt_config(encrypt_pw)
-    os.execute("sudo ./scripts/enable_site.sh")
+    run_cmd("sudo ./scripts/enable_site.sh")
 end
 
 cmds["acme"] = function()
-    os.execute("export DP_Id=\"" .. dnspod_id .. "\"")
-    os.execute("export DP_Key=\"" .. dnspod_token .. "\"")
-    os.execute("sudo ./scripts/auto_certs_acquire.sh")
+    run_cmd("export DP_Id=\"" .. dnspod_id .. "\"")
+    run_cmd("export DP_Key=\"" .. dnspod_token .. "\"")
+    run_cmd("sudo ./scripts/auto_certs_acquire.sh")
 end
 
 cmd = arg[1]

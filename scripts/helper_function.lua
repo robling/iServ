@@ -15,3 +15,8 @@ function decrypt_config(pw)
         os.execute('openssl enc -des-cfb -d -salt -in config.lua.aes -out config.lua')
     end
 end
+
+function run_cmd(cm)
+    print(cm)
+    os.execute(cm)
+end
