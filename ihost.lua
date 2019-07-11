@@ -34,9 +34,7 @@ cmds["enable_site"] = function()
 end
 
 cmds["acme"] = function()
-    run_cmd("export DP_Id=\"" .. dnspod_id .. "\"")
-    run_cmd("export DP_Key=\"" .. dnspod_token .. "\"")
-    run_cmd("sudo ./scripts/auto_certs_acquire.sh")
+    run_cmd("sudo ./scripts/auto_certs_acquire.sh " .. dnspod_id .. " " dnspod_token)
 end
 
 cmd = arg[1]
