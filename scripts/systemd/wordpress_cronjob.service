@@ -1,5 +1,0 @@
-[Unit]
-Description=Invoke cronjob for wordpress
-
-[Service]
-ExecStart=/usr/bin/php -f /home/mio/www/blog/wordpress/wp-cron.php

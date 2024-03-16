@@ -1,5 +1,0 @@
-[Unit]
-Description=Auto-update system by zypper
-
-[Service]
-ExecStart=/home/mio/iServ/scripts/auto_update.sh

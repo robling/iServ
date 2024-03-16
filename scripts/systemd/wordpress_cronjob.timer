@@ -1,8 +1,0 @@
-[Unit]
-Description=Invoke cronjob for wordpress ever hour
-
-[Timer]
-OnCalendar=hourly
-
-[Install]
-WantedBy=timers.target

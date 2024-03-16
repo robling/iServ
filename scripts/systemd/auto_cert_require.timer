@@ -1,8 +1,0 @@
-[Unit]
-Description=Run cert auto acquire everyday
-
-[Timer]
-OnCalendar=04:19
-
-[Install]
-WantedBy=timers.target

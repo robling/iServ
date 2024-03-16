@@ -1,5 +1,0 @@
-[Unit]
-Description=Auto acquire letsencrypt certs
-
-[Service]
-ExecStart=/home/mio/iServ/scripts/auto_certs_acquire.sh

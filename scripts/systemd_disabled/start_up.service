@@ -1,9 +1,0 @@
-[Unit]
-Description=Run something after system boot
-
-[Service]
-ExecStart=/home/mio/iServ/scripts/startup_scripts.sh
-Wants=network-online.target
-
-[Install]
-WantedBy=multi-user.target
