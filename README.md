@@ -42,6 +42,7 @@ sudo podman run --name db --pod web \
  -e MARIADB_PASSWORD=$PASSWD \
  -e MARIADB_DATABASE=blog \
  -e MARIADB_ROOT_PASSWORD=$PASSWD \
+ -v /home/$USER/Data/mariadb:/var/lib/mysql:Z \
  -v /home/$USER/Data/dump.sql:/docker-entrypoint-initdb.d/dump.sql:z \
  -d docker.io/library/mariadb
 
