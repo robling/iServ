@@ -23,7 +23,7 @@ sudo podman exec -it db mariadb-dump -u $USER --password=$PASSWD blog > ~/Data/d
 # 打包文件
 sudo tar cpzf backup.tar.gz Config/ Data/
 # 按时间戳归档
-cp backup.tar.gz ~/Backup/backup_$(date +"%Y%m%d_%H%M%S").tar.gz
+sudo cp backup.tar.gz ~/Backup/backup_$(date +"%Y%m%d_%H%M%S").tar.gz
 ```
 
 ### From Existing Server：
