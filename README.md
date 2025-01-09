@@ -3,11 +3,15 @@
 
 所有的对外服务都尽可能使用镜像提供，使用Podman驱动
 
-数据文件：
-`pwd`
-  \Config
-  \Data
-  \Backup
+### 文件目录结构
+```
+$ ls -l 
+total 293748
+drwxr-x--- 2 lighthouse lighthouse      4096 Jan  9 23:57 Backup
+-rw-r----- 1 root       root       300775219 Jan  9 23:57 backup.tar.gz
+drwxr-xr-x 3 lighthouse lighthouse      4096 Jan  9 15:55 Config
+drwxrwxr-x 5 www-data   www-data        4096 Jan  9 11:40 Data
+```
 
 ### 运行之前
 ``` Bash
