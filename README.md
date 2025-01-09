@@ -74,6 +74,14 @@ sudo podman run --name redis --pod web \
   -d docker.io/library/redis:latest
 ```
 
+### 确认各项服务正常
+```
+# 确认镜像都运行起来了
+sudo podman ps
+
+# 再确认下wordpress本身是否可用
+```
+
 ### 使用Systemd管理服务
 ```
 # 切换到systemd配置文件目录
