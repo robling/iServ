@@ -16,9 +16,14 @@ export PASSWD="YOUR PASSWORD"
 
 ### Backup：
 ``` Bash
-sudo rm backup.tar.gz 
+# 删除上一次备份的文件
+sudo rm backup.tar.gz
+# 导出数据库
 sudo podman exec -it db mariadb-dump -u $USER --password=$PASSWD blog > ~/Data/dump.sql
+# 打包文件
 sudo tar cpzf backup.tar.gz Config/ Data/
+# 按时间戳归档
+cp backup.tar.gz ~/Backup/backup_$(date +"%Y%m%d_%H%M%S").tar.gz
 ```
 
 ### From Existing Server：
