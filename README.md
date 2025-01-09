@@ -9,12 +9,13 @@
   \Data
   \Backup
 
-### Before Running
+### 运行之前
 ``` Bash
+# 设置密码（用户名为你的当前用户）
 export PASSWD="YOUR PASSWORD"
 ```
 
-### Backup：
+### 备份数据
 ``` Bash
 # 删除上一次备份的文件
 sudo rm backup.tar.gz
@@ -32,9 +33,12 @@ scp {user_name}@{ip_adress}:~/backup.tar.gz ~/
 tar xzpvf backup.tar.gz .
 ```
 
-### Construct Server
+### 创建POD以及wordpress运行需要的镜像
 ``` Bash
+# 先创建一个POD
 sudo podman pod create --name web -p 18046:18046 -p 80:80 -p 443:443 
+
+# 然后依次创建caddy:latest, mariadb:latest, redis:latest和wordpress:
 
 sudo podman run --name caddy --pod web \
   --label "io.containers.autoupdate=image" \
@@ -66,11 +70,30 @@ sudo podman run --name wordpress --pod web \
 sudo podman run --name redis --pod web \
   --label "io.containers.autoupdate=image" \
   -d docker.io/library/redis:latest
-
-sudo podman generate kube web -f web_pod_kube.yaml
 ```
 
-## For Redhat Linux
+### 使用Systemd管理服务
+```
+# 切换到systemd配置文件目录
+mkdir -p ~/Config/systemd && cd "$_"
+
+# 生成systemd config
+sudo podman generate systemd --new --files --name web
+
+# 激活systemd服务
+sudo cp * /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl start pod-web
+```
+
+### 更新镜像
+```
+# 手动更新镜像
+sudo podman auto-update
+
+# 自动更新
+mkdir -p ~/Config/systemd && cd "$_"
+
+```
 
 
-## For Debian Linux
