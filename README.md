@@ -93,7 +93,12 @@ sudo podman auto-update
 
 # 自动更新
 mkdir -p ~/Config/systemd && cd "$_"
-
+wget https://raw.githubusercontent.com/robling/iServ/refs/heads/master/Config/podman-auto-update.service.in
+wget https://raw.githubusercontent.com/robling/iServ/refs/heads/master/Config/podman-auto-update.timer
+sudo cp * /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable podman-auto-update.service
+sudo systemctl enable podman-auto-update.timer
 ```
 
 
