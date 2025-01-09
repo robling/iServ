@@ -37,21 +37,24 @@ tar xzpvf backup.tar.gz .
 sudo podman pod create --name web -p 18046:18046 -p 80:80 -p 443:443 
 
 sudo podman run --name caddy --pod web \
- -v /home/$USER/Data/caddy_data:/data:z \
- -v /home/$USER/Config/Caddyfile:/etc/caddy/Caddyfile:z \
- -v /home/$USER/Data/wordpress:/var/www/html:z \
- -d docker.io/library/caddy
+  --label "io.containers.autoupdate=image" \
+  -v /home/$USER/Data/caddy_data:/data:z \
+  -v /home/$USER/Config/Caddyfile:/etc/caddy/Caddyfile:z \
+  -v /home/$USER/Data/wordpress:/var/www/html:z \
+  -d docker.io/library/caddy
 
 sudo podman run --name db --pod web \
- -e MARIADB_USER=$USER \
- -e MARIADB_PASSWORD=$PASSWD \
- -e MARIADB_DATABASE=blog \
- -e MARIADB_ROOT_PASSWORD=$PASSWD \
- -v /home/$USER/Data/mariadb:/var/lib/mysql:Z \
- -v /home/$USER/Data/dump.sql:/docker-entrypoint-initdb.d/dump.sql:z \
- -d docker.io/library/mariadb
+  --label "io.containers.autoupdate=image" \
+  -e MARIADB_USER=$USER \
+  -e MARIADB_PASSWORD=$PASSWD \
+  -e MARIADB_DATABASE=blog \
+  -e MARIADB_ROOT_PASSWORD=$PASSWD \
+  -v /home/$USER/Data/mariadb:/var/lib/mysql:Z \
+  -v /home/$USER/Data/dump.sql:/docker-entrypoint-initdb.d/dump.sql:z \
+  -d docker.io/library/mariadb
 
 sudo podman run --name wordpress --pod web \
+  --label "io.containers.autoupdate=image" \
   -e WORDPRESS_DB_HOST=127.0.0.1 \
   -e ALLOW_EMPTY_PASSWORD=yes \
   -e WORDPRESS_DB_USER=$USER \
@@ -61,6 +64,7 @@ sudo podman run --name wordpress --pod web \
   -d docker.io/library/wordpress:fpm
 
 sudo podman run --name redis --pod web \
+  --label "io.containers.autoupdate=image" \
   -d docker.io/library/redis:latest
 
 sudo podman generate kube web -f web_pod_kube.yaml
