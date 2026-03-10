@@ -69,6 +69,12 @@ sudo podman run --name wordpress --pod web \
   -v /home/$USER/Data/wordpress:/var/www/html:z \
   -d docker.io/library/wordpress:fpm
 
+sudo podman run -d --name notes-couchdb --pod web\
+  -e COUCHDB_USER=$USER -e COUCHDB_PASSWORD=$PASSWD \
+  -v /home/$USER/Data/couchdb/data:/opt/couchdb/data \
+  -v /home/$USER/Data/couchdb/local.d:/opt/couchdb/etc/local.d \
+  docker.io/apache/couchdb:latest
+
 sudo podman run --name redis --pod web \
   --label "io.containers.autoupdate=image" \
   -d docker.io/library/redis:latest
