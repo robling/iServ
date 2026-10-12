@@ -13,26 +13,48 @@ Data
 
 ### 运行之前
 ``` Bash
-# 设置密码（用户名为你的当前用户）
+# 设置密码（用户名为你的当前用户），仅首次创建容器时使用
 export PASSWD="YOUR PASSWORD"
 ```
 
 ### 备份数据
+备份由 `Scripts/backup.sh` 完成（安装为 `/usr/local/sbin/iserv-backup`，需 root 运行）：
+1. 在容器 `db` 内用 `mariadb-dump --single-transaction` 导出 `blog` 库到 `~/Data/dump.sql`（不使用 `-it`，定时任务中也能正常导出；导出为空/过小/不完整时直接报错退出）
+2. 打包 `Config/` 和 `Data/`，原子写入 `~/Backup/backup_<YYYYmmdd_HHMMSS>[_<label>].tar.gz`
+3. 同时把最新一份复制为 `~/backup.tar.gz`，兼容下面的 scp 恢复方式
+4. 日志写入 journal：`sudo journalctl -t iserv-backup`
+
+数据库账号密码保存在 `/etc/iserv/backup.env`（root 所有，权限 600，**不入库**），格式：
 ``` Bash
-# 删除上一次备份的文件
-sudo rm backup.tar.gz
-# 导出数据库
-sudo podman exec -it db mariadb-dump -u $USER --password=$PASSWD blog > ~/Data/dump.sql
-# 打包文件
-sudo tar cpzf backup.tar.gz Config/ Data/
-# 按时间戳归档
-sudo cp backup.tar.gz ~/Backup/backup_$(date +"%Y%m%d_%H%M%S").tar.gz
+DB_USER='用户名'
+DB_PASSWORD='密码'
+DB_NAME=blog
+DB_CONTAINER=db
 ```
 
-### From Existing Server：
+安装：
+``` Bash
+sudo install -m 755 Scripts/backup.sh /usr/local/sbin/iserv-backup
+sudo install -d -m 700 /etc/iserv
+sudo sh -c 'umask 077; vi /etc/iserv/backup.env'
+sudo cp Config/systemd/iserv-backup.service Config/systemd/iserv-backup.timer /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable --now iserv-backup.timer
+```
+
+- **每月自动备份**：`iserv-backup.timer` 每月 1 日 04:17（随机延迟 30 分钟内）执行，关机错过会在开机后补跑
+- **重大变更前手动备份**：带上标签，例如 `sudo iserv-backup pre-upgrade`、`sudo iserv-backup pre-theme-switch`
+- **保留策略**：无标签的月度备份保留最近 6 份，带标签的手动备份保留最近 5 份
+- 查看下次执行时间：`systemctl list-timers iserv-backup.timer`
+
+### 恢复数据
+#### From Existing Server：
 ``` Bash
 scp {user_name}@{ip_adress}:~/backup.tar.gz ~/
 tar xzpvf backup.tar.gz .
+# 或从本机归档恢复：tar xzpvf ~/Backup/backup_<时间戳>.tar.gz -C ~
+# 新建 db 容器时会自动导入 Data/dump.sql；已有数据库可手动导入：
+# sudo podman exec -i db mariadb -u $USER -p blog < ~/Data/dump.sql
 ```
 
 ### 创建POD以及wordpress运行需要的镜像
@@ -69,12 +91,6 @@ sudo podman run --name wordpress --pod web \
   -v /home/$USER/Data/wordpress:/var/www/html:z \
   -d docker.io/library/wordpress:fpm
 
-sudo podman run -d --name notes-couchdb --pod web\
-  -e COUCHDB_USER=$USER -e COUCHDB_PASSWORD=$PASSWD \
-  -v /home/$USER/Data/couchdb/data:/opt/couchdb/data \
-  -v /home/$USER/Data/couchdb/local.d:/opt/couchdb/etc/local.d \
-  docker.io/apache/couchdb:latest
-
 sudo podman run --name redis --pod web \
   --label "io.containers.autoupdate=image" \
   -d docker.io/library/redis:latest
@@ -101,6 +117,11 @@ sudo cp * /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl start pod-web
 ```
+
+### SSH 安全
+- SSH 仅允许密钥登录，已禁用密码登录和 root 直接登录（配置见 `/etc/ssh/sshd_config.d/00-hardening.conf`）
+- 已安装 fail2ban：同一 IP 10 分钟内失败 5 次封禁 1 小时
+- POD 中已不再运行 notes-couchdb（CouchDB）和 cockpit
 
 ### 更新镜像
 ```

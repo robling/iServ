@@ -1,0 +1,9 @@
+[Unit]
+Description=iServ backup (mariadb dump + Config/Data archive)
+After=pod-web.service network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/iserv-backup
+Nice=10
+IOSchedulingClass=idle
